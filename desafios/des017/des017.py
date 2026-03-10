@@ -9,10 +9,14 @@ class PRODUTO:
         self.preco = preco
 
     def etiqueta(self):
-        etiqueta = Panel.fit(title="Produto", renderable=f"{self.nome:^40}\n" + f'{".":.^40}\n' +f"{f'R${self.preco:.2f}':.^40}")
+        conteudo = f'{self.nome.center(30, " ")}'
+        conteudo += f"{'-' * 30}"
+        precof = f'R${self.preco:,.2f}'
+        conteudo += f'{precof.center(30, ".")}'
+        etiqueta = Panel(title="Produto", renderable=conteudo, width=34)
         print(etiqueta)
 
-p1 = PRODUTO("Iphone 17 Pro Max", 5_500.00)
+p1 = PRODUTO("Iphone 17 Pro Max", 5_500)
 p1.etiqueta()
-p2 = PRODUTO("Computador Xeon X99", 2_500.00)
+p2 = PRODUTO("Computador Xeon X99", 2_500)
 p2.etiqueta()
