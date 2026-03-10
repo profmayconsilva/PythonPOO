@@ -1,41 +1,28 @@
 from rich import print
-from rich.live import Live
-from rich.text import Text
 import time
-
 
 class Livro:
     def __init__(self, titulo, paginas):
         self.titulo = titulo
-        self.paginas = paginas
-        self.pag_atual = 1
+        self.total_paginas = paginas
+        self.pagina_atual = 1
 
-    def avancar_paginas(self, quant_pag, delay=0.8):
-        print(
-            f':book: [blue]Você acabou de abrir o livro [red]"{self.titulo}"[/] '
-            f'que tem [green]{self.paginas} páginas[/] no total.\n'
-            f'Agora você está na [yellow]página {self.pag_atual}[/]\n'
-        )
+        print(f":open_book: [blue]Você acabou de abrir o livro [red] {self.titulo} [/] que tem {self.total_paginas} paginas no total. Você agora está na página {self.pagina_atual}. [/]")
 
-        texto = Text()
+    def avancar_paginas(self, qtd = 1):
+        cont = 0
+        for pg in range(0, qtd, 1):
+            if not self.fim_do_livro():
+                self.pagina_atual +=1
+                print(f"Pág {self.pagina_atual} :arrow_forward: ", end='')
+                time.sleep(0.5)
+                cont += 1
+        print(f"[blue]Você agora está na página [yellow]{self.pagina_atual}[/][/]")
+        if self.fim_do_livro():
+            print(f":closed_book: Você chegou ao final do livro {self.titulo} ")
 
-        with Live(texto, refresh_per_second=10) as live:
-            for _ in range(quant_pag):
-                time.sleep(delay)
+    def fim_do_livro(self) -> bool:
+       return True if self.pagina_atual == self.total_paginas else False
 
-                if self.pag_atual < self.paginas:
-                    self.pag_atual += 1
-                    texto.append(" > ", style="dim")
-                    texto.append(f"pág {self.pag_atual}", style="bold yellow")
-                    live.update(texto)
-                else:
-                    texto.append("\nVocê chegou ao final do livro", style="bold red")
-                    live.update(texto)
-                    break
-
-
-livro1 = Livro(titulo='Reis 1', paginas=20)
-livro2 = Livro(titulo='Reis 2', paginas=30)
-
-livro1.avancar_paginas(quant_pag=21)
-livro2.avancar_paginas(quant_pag=20)
+l1 = Livro("10 coisas que eu aprendi", 20)
+l1.avancar_paginas(20)
